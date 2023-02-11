@@ -34,7 +34,7 @@ const Customer = mongoose.model(
 
 function validateCustomer(customer) {
   const schema = Joi.object({
-    name: Joi.string().min(3).required(),
+    name: Joi.string().min(3).max(20).required(),
     email: Joi.string().email().required(),
     phone: Joi.string()
       .pattern(/^\d{7,15}$/)
@@ -47,7 +47,7 @@ function validateCustomer(customer) {
 
 function validateUpdate(customer) {
   const schema = Joi.object({
-    name: Joi.string().min(3),
+    name: Joi.string().min(3).max(20),
     email: Joi.string().email(),
     phone: Joi.string().pattern(/^\d{7,15}$/),
     isGold: Joi.boolean(),
