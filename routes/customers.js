@@ -1,10 +1,9 @@
 const express = require("express");
 const {
   Customer,
-  validateNewCustomer,
-  validateCustomerForUpdate,
-} = require("../models/customers");
-
+  validateCustomer,
+  validateUpdate,
+} = require("../models/customer");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -24,7 +23,7 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { error } = validateNewCustomer(req.body);
+  const { error } = validateCustomer(req.body);
   if (error) return res.status(400).send(error.message);
 
   let customer = new Customer({
@@ -39,7 +38,7 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  const { error } = validateCustomerForUpdate(req.body);
+  const { error } = validateUpdate(req.body);
   if (error) return res.status(400).send(error.message);
 
   let customer = await Customer.findById(req.params.id);

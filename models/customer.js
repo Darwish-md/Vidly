@@ -32,7 +32,7 @@ const Customer = mongoose.model(
   })
 );
 
-function validateNewCustomer(customer) {
+function validateCustomer(customer) {
   const schema = Joi.object({
     name: Joi.string().min(3).required(),
     email: Joi.string().email().required(),
@@ -45,7 +45,7 @@ function validateNewCustomer(customer) {
   return schema.validate(customer);
 }
 
-function validateCustomerForUpdate(customer) {
+function validateUpdate(customer) {
   const schema = Joi.object({
     name: Joi.string().min(3),
     email: Joi.string().email(),
@@ -56,4 +56,4 @@ function validateCustomerForUpdate(customer) {
   return schema.validate(customer);
 }
 
-module.exports = { Customer, validateNewCustomer, validateCustomerForUpdate };
+module.exports = {Customer, validateCustomer, validateUpdate};
