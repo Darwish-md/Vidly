@@ -54,7 +54,7 @@ router.put("/:id", async (req, res) => {
     isGold: req.body.isGold || customer.isGold,
   });
 
-  customer = await customer.save();
+  await customer.save();
 
   res.send(customer);
 });
