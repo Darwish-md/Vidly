@@ -1,4 +1,6 @@
 const express = require("express");
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 const { Genre, validateGenre } = require("../models/genre");
 const router = express.Router();
 
@@ -16,7 +18,7 @@ router.get("/:id", async (req, res) => {
   res.send(genre);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { error } = validateGenre(req.body);
   if (error) return res.status(400).send(error.message);
 
@@ -25,7 +27,7 @@ router.post("/", async (req, res) => {
   res.send(genre);
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   //update first approach
   /*const { error } = validateGenre(req.body);
     if (error) return res.status(400).send(error.message);
@@ -56,7 +58,7 @@ router.put("/:id", async (req, res) => {
   res.send(genre);
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", [auth, admin], async (req, res) => {
   const genre = await Genre.findByIdAndDelete({ _id: req.params.id });
 
   if (!genre)
