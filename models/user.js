@@ -19,7 +19,7 @@ userSchema = new mongoose.Schema({
     unique: true,
     validate: function (value) {
       return validator.isEmail(value);
-    },
+    }
   },
   password: {
     type: String,

@@ -1,7 +1,7 @@
 const { Movie, validate } = require("../models/movie");
 const { Genre } = require("../models/genre");
 const auth = require('../middleware/auth');
-const auth = require('../middleware/admin');
+const admin = require('../middleware/admin');
 const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
