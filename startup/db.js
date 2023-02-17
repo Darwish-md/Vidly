@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
+const config = require("config");
 const { logger } = require('./logger');
 
 module.exports = function () {
-  const uri =
-    "mongodb+srv://kali:kai@cluster0.u2xijug.mongodb.net/Vidly?retryWrites=true&w=majority";
   mongoose
-    .connect(uri)
+    .connect(config.get('db'))
     .then(() => logger.info("Connected to mongodb."));
 };
 

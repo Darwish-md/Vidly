@@ -1,3 +1,4 @@
 {
-    "jwtPrivateKey": "testing"
+    "jwtPrivateKey": "testing",
+    "db": "mongodb+srv://kali:kali@cluster0.u2xijug.mongodb.net/Vidly_test?retryWrites=true&w=majority"
 }
