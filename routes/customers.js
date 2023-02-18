@@ -1,6 +1,7 @@
 const express = require("express");
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
+const validateObjectId = require('../middleware/validateObjectId');
 const {
   Customer,
   validateCustomer,
@@ -13,7 +14,7 @@ router.get("/", async (req, res) => {
   res.send(customers);
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", validateObjectId, async (req, res) => {
   const customer = await Customer.findById(req.params.id);
 
   if (!customer)
@@ -39,7 +40,7 @@ router.post("/", auth, async (req, res) => {
   res.send(customer);
 });
 
-router.put("/:id", auth, async (req, res) => {
+router.put("/:id", auth, validateObjectId, async (req, res) => {
   const { error } = validateUpdate(req.body);
   if (error) return res.status(400).send(error.message);
 
@@ -61,7 +62,7 @@ router.put("/:id", auth, async (req, res) => {
   res.send(customer);
 });
 
-router.delete("/:id", [auth, admin], async (req, res) => {
+router.delete("/:id", [auth, admin], validateObjectId, async (req, res) => {
   const customer = await Customer.findByIdAndDelete({ _id: req.params.id });
 
   if (!customer)

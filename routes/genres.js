@@ -3,7 +3,7 @@ const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 const { Genre, validateGenre } = require("../models/genre");
 const asyncMiddleWare = require('../middleware/async');
-const { default: mongoose } = require("mongoose");
+const validateObjectId = require('../middleware/validateObjectId');
 const router = express.Router();
 
 router.get("/", asyncMiddleWare(async (req, res) => {
@@ -11,10 +11,7 @@ router.get("/", asyncMiddleWare(async (req, res) => {
   res.send(genres);
 }));
 
-router.get("/:id", async (req, res) => {
-  if(!mongoose.Types.ObjectId.isValid(req.params.id))
-    return res.status(404).send("Invalid ID.");
-    
+router.get("/:id", validateObjectId, async (req, res) => {
   const genre = await Genre.findById(req.params.id);
 
   if (!genre)
@@ -32,7 +29,7 @@ router.post("/", auth, async (req, res) => {
   res.send(genre);
 });
 
-router.put("/:id", auth, async (req, res) => {
+router.put("/:id", auth, validateObjectId, async (req, res) => {
   //update first approach
   /*const { error } = validateGenre(req.body);
     if (error) return res.status(400).send(error.message);
@@ -63,7 +60,7 @@ router.put("/:id", auth, async (req, res) => {
   res.send(genre);
 });
 
-router.delete("/:id", [auth, admin], async (req, res) => {
+router.delete("/:id", [auth, admin], validateObjectId, async (req, res) => {
   const genre = await Genre.findByIdAndDelete({ _id: req.params.id });
 
   if (!genre)

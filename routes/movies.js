@@ -2,6 +2,7 @@ const { Movie, validate } = require("../models/movie");
 const { Genre } = require("../models/genre");
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
+const validateObjectId = require('../middleware/validateObjectId');
 const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
@@ -11,7 +12,7 @@ router.get("/", async (req, res) => {
   res.send(movies);
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", validateObjectId, async (req, res) => {
     const movie = await Movie.findById(req.params.id);
   
     if (!movie)
@@ -43,7 +44,7 @@ router.post("/", auth, async (req, res) => {
 });
 
 //TODO Here we have to pass all the attributes to update a movie, it should be updated as in customers route
-router.put("/:id", auth, async (req, res) => {
+router.put("/:id", auth, validateObjectId, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.message);
 
@@ -71,7 +72,7 @@ router.put("/:id", auth, async (req, res) => {
   res.send(movie);
 });
 
-router.delete("/:id", [auth, admin], async (req, res) => {
+router.delete("/:id", [auth, admin], validateObjectId, async (req, res) => {
   const movie = await Movie.findByIdAndRemove(req.params.id);
 
   if (!movie)

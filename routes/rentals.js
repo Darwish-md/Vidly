@@ -2,6 +2,7 @@ const { Rental, validate } = require("../models/rental");
 const { Movie } = require("../models/movie");
 const { Customer } = require("../models/customer");
 const auth = require('../middleware/auth');
+const validateObjectId = require('../middleware/validateObjectId');
 const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
@@ -11,7 +12,7 @@ router.get("/", async (req, res) => {
   res.send(rentals);
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", validateObjectId, async (req, res) => {
   const rental = await Rental.findById(req.params.id);
 
   if (!rental)
